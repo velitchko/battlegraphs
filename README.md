@@ -11,14 +11,6 @@ Battlegraphs Card Generator is a tool for creating custom cards for the Battlegr
 > **Abstract**  
 > Constructive visualization enables users to create personalized data representations and facilitates early insight generation and sensemaking. Based on NODKANT, a toolkit for creating physical network diagrams using 3D printed parts, we define a competitive network physicalization game: BattleGraphs. In BattleGraphs, two players construct networks independently and compete in solving network analysis benchmark tasks. We propose a workshop scenario where we deploy our game, collect strategies for interaction and analysis from our players, and measure the effectiveness of the strategy with the success of the player to discuss in a reflection phase. Printable parts of the game, as well as instructions, are available through the Open Science Framework at https://osf.io/x6zv7/.
 
-
-## Features
-
-- Interactive card editor
-- Customizable card attributes (name, stats, abilities, etc.)
-- Real-time preview
-- Export cards as images or printable PDFs
-
 ## Installation
 
 ```bash

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BattleGraphs - Generator</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .card-container, .kant-container, .back-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 0px;
+        }
+        .card, .back {
+            width: 2.5in;
+            height: 3.5in;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #333;
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            padding: 25px;
+            font-size: 20px;
+            position: relative;
+            box-sizing: border-box;
+            background-color: white;
+        }
+        .back {
+            border: 2px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container" id="task-card-container"></div>
+    <div class="back-container" id="task-back-container"></div>
+    <div class="kant-container" id="kants-p1-container"></div>
+    <div class="back-container" id="kants-p1-back-container"></div>
+    <div class="kant-container" id="kants-p2-container"></div>
+    <div class="back-container" id="kants-p2-back-container"></div>
+<script>
+
+
+function cardBorder(d3sel) {
+    d3sel.append("div")
+        .style("position", "absolute")
+        .style("top", "8px")
+        .style("left", "8px")
+        .style("right", "8px")
+        .style("bottom", "8px")
+        .style("border", "4px solid #40637f")
+        .style("border-radius", "12px")
+        .style("pointer-events", "none")
+        .style("z-index", "1");
+    d3sel.append("div")
+        .style("position", "absolute")
+        .style("top", "18px")
+        .style("left", "18px")
+        .style("right", "18px")
+        .style("bottom", "18px")
+        .style("border", "3px solid #40637f")
+        .style("border-radius", "6px")
+        .style("pointer-events", "none")
+        .style("z-index", "1");
+}
+
+// Load tasks.csv and kants.csv
+Promise.all([
+    d3.text("tasks.csv"),
+    d3.text("kants.csv")
+]).then(([tasksText, kantsText]) => {
+    // Parse CSVs as simple line lists
+    const tasks = tasksText.split(/\r?\n/).slice(1).filter(d => d.trim());
+    const kants = kantsText.split(/\r?\n/).slice(1).filter(d=>d.trim());
+    // Extract all names from kants CSV (split on comma, trim, flatten, dedupe)
+    const names = Array.from(
+        new Set(
+            kants
+                .map(d => d.split(","))
+                .flat()
+                .map(s => s.trim())
+                .filter(s => s)
+        )
+    );
+
+    console.log(names);
+
+    const formatKant = d => {
+        const parts = d.split(",");
+        if (parts.length < 2) return d;
+        let from = parts[0].trim();
+        let to = parts[1].trim();
+        return `From: <b>${from}</b> <br> To: <b>${to}</b>`;
+    };
+
+    const boldNames = (text, names) => {
+        console.log(text);
+        console.log(names);
+        // Escape regex special characters in names
+        const escapedNames = names
+            .filter(name => name && name.length > 0)
+            .sort((a, b) => b.length - a.length) // longest first to avoid partial matches
+            .map(name => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        if (escapedNames.length === 0) return text;
+        const regex = new RegExp(`\\b(${escapedNames.join('|')})\\b`, 'g');
+        return text.replace(regex, '<b>$1</b>');
+    }
+
+    // TASK CARDS
+    d3.select("#task-card-container")
+        .selectAll(".card")
+        .data(tasks)
+        .enter()
+        .append("div")
+        .attr("class", "card")
+        .html(d => `<div>${boldNames(d, names)}</div>`)
+        .each(function() { cardBorder(d3.select(this)); });
+
+    // TASK BACKS
+    d3.select("#task-back-container")
+        .selectAll(".back")
+        .data(tasks)
+        .enter()
+        .append("div")
+        .attr("class", "back")
+        .style("background", "#fff")
+        .html("<img src='backing-black.svg' style='width: 120%; border-radius: 12px;'>");
+
+    // KANTS P1 CARDS
+    d3.select("#kants-p1-container")
+        .selectAll(".card")
+        .data(kants)
+        .enter()
+        .append("div")
+        .attr("class", "card")
+        .html(d => `<div>${formatKant(d, names)}</div>`)
+        .each(function() { cardBorder(d3.select(this)); });
+
+    // KANTS P1 BACKS
+    d3.select("#kants-p1-back-container")
+        .selectAll(".back")
+        .data(kants)
+        .enter()
+        .append("div")
+        .attr("class", "back")
+        .style("background", "#823129")
+        .html("<img src='backing-white-red.svg' style='width: 120%; border-radius: 12px;'>");
+
+    // KANTS P2 CARDS
+    d3.select("#kants-p2-container")
+        .selectAll(".card")
+        .data(kants)
+        .enter()
+        .append("div")
+        .attr("class", "card")
+        .html(d => `<div>${formatKant(d, names)}</div>`)
+        .each(function() { cardBorder(d3.select(this)); });
+
+    // KANTS P2 BACKS
+    d3.select("#kants-p2-back-container")
+        .selectAll(".back")
+        .data(kants)
+        .enter()
+        .append("div")
+        .attr("class", "back")
+        .style("background", "#32506C")
+        .html("<img src='backing-white-blue.svg' style='width: 120%; border-radius: 12px;'>");
+});
+</script>
+</body>
+</html>

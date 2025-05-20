@@ -1,0 +1,20 @@
+Task
+How many animals are part of this network?
+What is the number of interactions (edges) in the network?
+Which animals lie on the shortest path between Siena and Kaia?
+Which animals lie on the shortest path between Della and Selah?
+Which animals lie on the shortest path between Cohen and Otis?
+Which animal(s) act as bridges in the network?
+Which animals are common neighbors of John and Rhett?
+Which animals are common neighbors of Zoey and Cohen?
+Which animals are common neighbors of Hazel and John?
+Which animal(s) has(have) the highest number of interactions?
+What is the highest number of interactions in the network?
+Which animal(s) has(have) the lowest number of interactions?
+What is the lowest number of interactions in the network?
+Which animals are connected to Erik within two hops?
+Which animals are connected to Selah within two hops?
+Which animals are connected to Cairo within two hops?
+Did Della and Zoey interact?
+Did Cohen and Cairo interact?
+Did Otis and Naya interact?
